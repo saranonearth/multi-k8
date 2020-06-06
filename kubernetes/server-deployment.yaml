@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: saranonearth/server-exp:latest
+          env:
+            - name: REDIS_HOST
+              value: redis-ip-service
+            - name: REDIS_PORT
+              value: "6379"
+            - name: PGUSER
+              value: admin
+            - name: PGHOST
+              value: postgres-cluster-ip
+            - name: PGPORT
+              value: "5432"
+            - name: PGDATABASE
+              value: postgres
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: POSTGRES_PASSWORD
+          ports:
+            - containerPort: 5000
