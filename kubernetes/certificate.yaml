@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: k8s-multi-com-tls
+spec:
+  secretName: k8s-multu-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: bhaukal.store
+  dnsNames:
+    - bhaukal.store
+    - www.bhaukal.store
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - bhaukal.store
+          - www.bhaukal.store
